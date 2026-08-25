@@ -1,0 +1,379 @@
+{
+  "deterministic": true,
+  "family_id": "draconicevolution",
+  "generator": "bluemap-java21-addon-scaffold-v1",
+  "initial_files": [
+    {
+      "mode": "0644",
+      "path": ".gitattributes",
+      "sha256": "c0b5802900ed076871e7878f051eb2cd8d7918dbfada3f40f86300fa7325252d",
+      "size": 58
+    },
+    {
+      "mode": "0644",
+      "path": ".github/workflows/ci.yml",
+      "sha256": "e1eb8b9444f0b41cc821287391b8e8525e84e5f3cf6af9a8fa66949a95976b5c",
+      "size": 4461
+    },
+    {
+      "mode": "0644",
+      "path": ".github/workflows/release.yml",
+      "sha256": "27ea99621b6e41ccc15ced236aa2c12f9142e50f24fe7ea02a84c682b1bf73ca",
+      "size": 6618
+    },
+    {
+      "mode": "0644",
+      "path": ".gitignore",
+      "sha256": "a5030053f21da04c319ab8abe4020d2ee1d488430e79f0b8ce04f1d7f29a93f6",
+      "size": 105
+    },
+    {
+      "mode": "0644",
+      "path": "AGENTS.md",
+      "sha256": "efa56170c0ea70ebf03c8ed33c1abd29e17f0886ce723bd9f4030ae62a7aba56",
+      "size": 2133
+    },
+    {
+      "mode": "0644",
+      "path": "CHANGELOG.md",
+      "sha256": "462d7374006b701721c742cc8e8866e0e28e71375c689b726f39524077b96586",
+      "size": 209
+    },
+    {
+      "mode": "0644",
+      "path": "LICENSE",
+      "sha256": "f079a10f7ddfae72170c16c8be18685f05e36309955c3858e9f863d4cae7cfce",
+      "size": 1068
+    },
+    {
+      "mode": "0644",
+      "path": "LICENSE-BlueMap",
+      "sha256": "f1c190d4a1ff29606cbed7a0d97fc7b7117cc2e1169e19caa753198957dbbfd6",
+      "size": 1122
+    },
+    {
+      "mode": "0644",
+      "path": "NOTICE.md",
+      "sha256": "80d326d25516e544c0491944d8dc20a1957cd1c3fe630ea038ad4c0d424ea288",
+      "size": 433
+    },
+    {
+      "mode": "0644",
+      "path": "README.md",
+      "sha256": "f534cd7d99df7bf10595304efa5377a5fcfd65db78d077ad911793844cdf1676",
+      "size": 1565
+    },
+    {
+      "mode": "0644",
+      "path": "THIRD_PARTY.md",
+      "sha256": "203d39dee8ace2fa4aa42c112fc5e1ea9922845c4d09ec2f155f7fd97b9d2d32",
+      "size": 624
+    },
+    {
+      "mode": "0644",
+      "path": "build.gradle",
+      "sha256": "615a68b858527bd76ece85b773713b85cc50b85e17a34cc1ff49e665031ebcfe",
+      "size": 19703
+    },
+    {
+      "mode": "0644",
+      "path": "config/checkstyle/checkstyle.xml",
+      "sha256": "77fe7b6d9a70f527daf7288ad2955e467f1059ef75b0c3d0d63694c8bea285d7",
+      "size": 791
+    },
+    {
+      "mode": "0644",
+      "path": "docs/EXECUTION.md",
+      "sha256": "a916cc943845ee5f8dc2c3f23f6a7f7c874dc0e0872e7dc33e89b0fafd12fbc7",
+      "size": 2077
+    },
+    {
+      "mode": "0644",
+      "path": "docs/RELEASING.md",
+      "sha256": "7488e66595e35648c172f99f43104e5dc8bdc99569a106b25bb628ef7f4b4b5d",
+      "size": 1522
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/README.md",
+      "sha256": "83d82d5718623461179e925d0b274a46bfb5fa6931871ba3fa0e38b7c28badec",
+      "size": 678
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/SHA256SUMS",
+      "sha256": "cdb81e963276aad326b3d826fb4f77e2b5bea4c44f22497a69a46e115bed0983",
+      "size": 949
+    },
+    {
+      "mode": "0755",
+      "path": "gallery/cases.py",
+      "sha256": "fdb2251627685a85c1092aa5896614f57c4a16568fa463b6cdaac43416b8e820",
+      "size": 769
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/datapack/data/draconic_evolution_gallery/function/build.mcfunction",
+      "sha256": "300fde93df58503630db3c50bca06425123b40940ef9b0a55e67105f000e4e13",
+      "size": 218
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/datapack/data/draconic_evolution_gallery/function/clear.mcfunction",
+      "sha256": "4507683d949af7e2312781de5e2ef0cb5d090ff6584e08f003a406bb4586b5d3",
+      "size": 91
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/datapack/data/draconic_evolution_gallery/function/load.mcfunction",
+      "sha256": "d375e378e735debfda497a0bff998484bb11b2109a3362f1acdc782922947241",
+      "size": 182
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/datapack/data/draconic_evolution_gallery/function/release.mcfunction",
+      "sha256": "54505b3d407b4846dbd50cd1b8d8b0c8b36884a8a3552146e470b9bfd7e8d268",
+      "size": 91
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/datapack/data/draconic_evolution_gallery/function/verify.mcfunction",
+      "sha256": "6e8c0c9f5e2b368c03bfcdd746e1eadd2db7f734f22a36a3a8dcd8a9fa847bf3",
+      "size": 256
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/datapack/data/minecraft/tags/function/load.json",
+      "sha256": "4e701715a71cf346c97e74c5627c7551b44914c64bd821be60083e162a7a662d",
+      "size": 60
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/datapack/pack.mcmeta",
+      "sha256": "0c73581966db85066d26d0dbed568c6737ca828392d0fc5b498396fd0a3f5e49",
+      "size": 113
+    },
+    {
+      "mode": "0755",
+      "path": "gallery/generate.py",
+      "sha256": "99791b85fa50a12ce0e7207bc4f8ac72d2f7674dce2d0b578d78944dd96b1ca3",
+      "size": 4826
+    },
+    {
+      "mode": "0755",
+      "path": "gallery/lint.py",
+      "sha256": "b970deb190d8597b0b0c07429be2898edd5bad6cef5c35e0f5b4bdfad7d58982",
+      "size": 2469
+    },
+    {
+      "mode": "0755",
+      "path": "gallery/package.sh",
+      "sha256": "2faf8dfddff80b4059732964ecdf651ba520ff290c931b19e3d804b439742f6a",
+      "size": 1325
+    },
+    {
+      "mode": "0644",
+      "path": "gallery/placements.tsv",
+      "sha256": "b56ee047c4aa36d26a7ca29b867a4bee61e3fa5aa25f0c4247ee46ca07cff797",
+      "size": 127
+    },
+    {
+      "mode": "0644",
+      "path": "gradle.properties",
+      "sha256": "054085aa43c76ae7e59d8f50af36d2fe83680d4cd149463ea861bbe75a62073b",
+      "size": 618
+    },
+    {
+      "mode": "0644",
+      "path": "provenance/release.json",
+      "sha256": "4bf547df45c3ac280d700bd143dc8f8d4dc3ac69b6f7080bf55119838cf7fbe3",
+      "size": 374
+    },
+    {
+      "mode": "0644",
+      "path": "provenance/upstreams.json",
+      "sha256": "3267527d8aff8b71a5c2b44b29719b418861daadddc205ea8c7f1c8f35a742bf",
+      "size": 1498
+    },
+    {
+      "mode": "0644",
+      "path": "settings.gradle",
+      "sha256": "1a455e89eb6b919f7e172b421a3621fc2b93bd52b478355ed54f11b95a098dfe",
+      "size": 1437
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/BlueMapDraconicEvolutionAddon.java",
+      "sha256": "40742aa5c42d7958c0693bb5f26f14ffff39f7464952e22471b5a3905636c9fc",
+      "size": 1599
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/activation/AddonRuntime.java",
+      "sha256": "9e47dda68b3d831e30b5e187438d6a0c3398663520a5a0344b850fee38225217",
+      "size": 2174
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/adapter/bluemap522/AdapterCompatibility.java",
+      "sha256": "6086a078d92df4a24138dcfc2aaee0f959bd03d5b1ace4b6931f6b83c89e4776",
+      "size": 1047
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/adapter/bluemap522/BlueMap522Adapter.java",
+      "sha256": "5006512a30d5d69bb4860808dba6842b157715bb34139ce5c224486f22cd3f25",
+      "size": 1154
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/adapter/bluemap522/ProfileResourceExtension.java",
+      "sha256": "2e06474375a7860aebfcd0a7fa61e960c84eaf2effce622f72104e1fa4161d35",
+      "size": 1755
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/adapter/bluemap522/ProfileResourceExtensionType.java",
+      "sha256": "a9e6bff082f3f2558711349d9948a020b16ae09bdcd1b2cf9258b34dbc3f618e",
+      "size": 949
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/adapter/bluemap522/RegistryGuard.java",
+      "sha256": "0b01b58c750405b91cc52ae3375de487847da327e85615ebce0e81c5c4216b1b",
+      "size": 884
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/profile/ArtifactPin.java",
+      "sha256": "3f680f6a23df5460c6ce8fff23f6eca2c3958f1e884169108b262978fba5a256",
+      "size": 1379
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/profile/DraconicEvolution314632Profile.java",
+      "sha256": "5fa4f6ee9dc72987493d8abcabbe5fb00c806e128947af3f1c53c6ca23100ae6",
+      "size": 794
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/java/io/github/janguenter/bluemap/draconicevolution/profile/ExactArtifactDetector.java",
+      "sha256": "70256df4d69f935dbfff51314880ccfa6c379f73afdeba527a30c22c4524352d",
+      "size": 9970
+    },
+    {
+      "mode": "0644",
+      "path": "src/main/resources/bluemap.addon.json",
+      "sha256": "775dca0cea773c14854ef29400628d64ffd1140b6d3325d1d0d97236ba9d22e3",
+      "size": 186
+    },
+    {
+      "mode": "0644",
+      "path": "src/test/java/io/github/janguenter/bluemap/draconicevolution/activation/AddonRuntimeTest.java",
+      "sha256": "1f402c7a8892d48ba839d593b6f26133694e73604a4cf391e80bb582f927cf00",
+      "size": 1083
+    },
+    {
+      "mode": "0644",
+      "path": "src/test/java/io/github/janguenter/bluemap/draconicevolution/adapter/bluemap522/AdapterCompatibilityTest.java",
+      "sha256": "1a1399e47e57af7fd1b17b0ed86e405766ca1e3d96948d16a19293dbf14c517b",
+      "size": 971
+    },
+    {
+      "mode": "0644",
+      "path": "src/test/java/io/github/janguenter/bluemap/draconicevolution/profile/ExactArtifactDetectorTest.java",
+      "sha256": "e4cc9c4a323e0cf1cf3bb09ecf59b78ec90a24611e619f311a2b5c1ee724bcf0",
+      "size": 3432
+    },
+    {
+      "mode": "0755",
+      "path": "tools/verify_pinned_artifacts.py",
+      "sha256": "dc7c6d80796f9d5773183a499aa61320a0126ac21f1fdb5c8e872bbf618ca798",
+      "size": 3508
+    },
+    {
+      "mode": "0755",
+      "path": "tools/verify_staged_equivalence.py",
+      "sha256": "cc8fa6cb1e79b85555b9f10920909b0c03fdc8d78445e07c877674e513fcff9f",
+      "size": 4441
+    }
+  ],
+  "repository": "bluemap-draconic-evolution-addon",
+  "schema": 1,
+  "spec_sha256": "d4fa807503530701b4aedaeb23b0211df49874a55f0357912aa05565b2c73bca",
+  "steps": [
+    {
+      "description": "Validate the reviewed scaffold spec.",
+      "id": "validate-spec",
+      "number": 1,
+      "status": "complete"
+    },
+    {
+      "description": "Render and byte-audit the deterministic seed.",
+      "id": "render-seed",
+      "number": 2,
+      "status": "complete"
+    },
+    {
+      "description": "Initialize the independent child repository and feature branch.",
+      "id": "initialize-repository",
+      "number": 3,
+      "status": "pending"
+    },
+    {
+      "description": "Acquire exact candidate artifacts outside Git and verify their identities.",
+      "id": "acquire-artifacts",
+      "number": 4,
+      "status": "pending"
+    },
+    {
+      "description": "Verify Java 21 and exact BlueMap, API, pack, and loader pins.",
+      "id": "verify-baseline",
+      "number": 5,
+      "status": "pending"
+    },
+    {
+      "description": "Implement family-owned registration, profile, decoder, and renderer.",
+      "id": "implement-family",
+      "number": 6,
+      "status": "pending"
+    },
+    {
+      "description": "Add focused compatibility, decoder, geometry, and fallback tests.",
+      "id": "focused-tests",
+      "number": 7,
+      "status": "pending"
+    },
+    {
+      "description": "Replace the stock-only gallery with the smallest defect fixture.",
+      "id": "defect-gallery",
+      "number": 8,
+      "status": "pending"
+    },
+    {
+      "description": "Build a prototype and deploy it promptly to disposable staging.",
+      "id": "stage-prototype",
+      "number": 9,
+      "status": "pending"
+    },
+    {
+      "description": "Obtain owner comparison and visual acceptance in client and BlueMap.",
+      "id": "owner-acceptance",
+      "number": 10,
+      "status": "pending"
+    },
+    {
+      "description": "Seal staging and publication identities and run the release gate.",
+      "id": "seal-release",
+      "number": 11,
+      "status": "pending"
+    },
+    {
+      "description": "Merge, tag, publish, verify, and update root coordination.",
+      "id": "publish-coordinate",
+      "number": 12,
+      "status": "pending"
+    }
+  ],
+  "template_sha256": "96f6497d2ea982ea702c0208ddf202393bb331b1b24f6600bd9a328ca62f4540"
+}

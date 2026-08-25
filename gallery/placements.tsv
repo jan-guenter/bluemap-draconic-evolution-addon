@@ -1,0 +1,2 @@
+case_id	label	x	y	z	block_state	expected
+stock-control	stone stock rendering control	176	100	175	minecraft:stone	stock-visible

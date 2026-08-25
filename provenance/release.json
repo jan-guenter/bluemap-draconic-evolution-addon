@@ -1,0 +1,10 @@
+{
+  "accepted_staging_entries": null,
+  "final_release_artifacts": null,
+  "note": "Populate only after owner visual acceptance; this file is not packaged.",
+  "owner_accepted_staging": null,
+  "repository": "https://github.com/jan-guenter/bluemap-draconic-evolution-addon",
+  "schema_version": 1,
+  "status": "prototype-not-owner-accepted",
+  "version": "0.1.0-SNAPSHOT"
+}

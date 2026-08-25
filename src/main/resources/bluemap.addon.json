@@ -1,0 +1,6 @@
+{
+  "id": "bluemap-draconic-evolution",
+  "entrypoint": "io.github.janguenter.bluemap.draconicevolution.BlueMapDraconicEvolutionAddon",
+  "dependencies": [],
+  "soft-dependencies": []
+}

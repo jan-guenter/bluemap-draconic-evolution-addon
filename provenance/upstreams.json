@@ -1,0 +1,37 @@
+{
+  "artifacts": [
+    {
+      "curseforge_file": 7584459,
+      "curseforge_project": 223565,
+      "download_url": "https://www.curseforge.com/api/v1/mods/223565/files/7584459/download",
+      "evidence": "All the Mons 1.2.0 manifest pins CurseForge 223565/7584459; the exact runtime JAR was recovered from the hash-locked server archive",
+      "evidence_tier": "T2_ARTIFACT_EXACT",
+      "file_name": "Draconic-Evolution-1.21.1-3.1.4.632.jar",
+      "key": "draconicEvolution",
+      "license": "CoFH Don't Be a Jerk License",
+      "mod_id": "draconicevolution",
+      "redistributed": false,
+      "sha1": "77ed9323c815433ca99c35b9d0f653d1efc36af5",
+      "sha256": "623d7d58e58428a206015b56bf67387c79ff6d97f7221cff23b1dad0bed9544e",
+      "size": 6045942,
+      "version": "3.1.4.632"
+    }
+  ],
+  "bluemap": {
+    "api_commit": "285c9a60eff3ac2b0cab308ce1058d1565be0971",
+    "commit": "9be321df995a1103808621d529eb72773e719d4d",
+    "license": "MIT",
+    "redistributed": false,
+    "version": "5.22-agent.backport-5.22-mc1.21.1-2"
+  },
+  "pack": {
+    "commit": "c7bb230f21d14d26859d0b92548f089b3a493ad9",
+    "minecraft": "1.21.1",
+    "name": "All the Mons",
+    "neoforge": "21.1.248",
+    "version": "1.2.0"
+  },
+  "profile": "draconicevolution-3.1.4.632",
+  "schema": 1,
+  "source_use": "Runtime interfaces and installed resources may be interpreted only after family-specific evidence is recorded; no candidate classes, assets, binaries, source, or captured meshes are packaged."
+}

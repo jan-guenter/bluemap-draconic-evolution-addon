@@ -1,0 +1,503 @@
+// SPDX-License-Identifier: MIT
+
+plugins {
+    id 'java-library'
+    id 'checkstyle'
+    id 'maven-publish'
+}
+
+group = addon_group
+version = addon_version
+
+base {
+    archivesName = artifact_id
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri('https://repo.bluecolored.de/releases')
+        content { includeGroupByRegex('de\\.bluecolored.*') }
+    }
+}
+
+dependencies {
+    compileOnly "de.bluecolored:bluemap-core:${bluemap_version}"
+    compileOnly 'org.jetbrains:annotations:23.0.0'
+    testImplementation "de.bluecolored:bluemap-core:${bluemap_version}"
+    testImplementation 'org.jetbrains:annotations:23.0.0'
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+    options.debug = true
+    options.debugOptions.debugLevel = 'source,lines'
+    options.compilerArgs.addAll(['-Xlint:all', '-Werror'])
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+tasks.withType(Zip).configureEach {
+    entryCompression = ZipEntryCompression.STORED
+}
+
+def artifactPins = [
+        [key: 'draconicEvolution', property: 'draconicEvolutionJar']
+]
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
+    artifactPins.each { pin ->
+        def exactJar = providers.gradleProperty(pin.property)
+        if (exactJar.isPresent()) {
+            systemProperty pin.property, exactJar.get()
+        }
+    }
+}
+
+checkstyle {
+    toolVersion = '10.18.2'
+    configFile = file('config/checkstyle/checkstyle.xml')
+}
+
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    includeEmptyDirs = false
+    manifest {
+        attributes(
+                'Automatic-Module-Name': 'io.github.janguenter.bluemap.draconicevolution',
+                'Implementation-Title': addon_name,
+                'Implementation-Version': project.version.toString()
+        )
+    }
+    from('LICENSE') {
+        into 'META-INF'
+        rename { 'LICENSE-bluemap-draconic-evolution-addon' }
+    }
+    from('LICENSE-BlueMap') { into 'META-INF' }
+    from('NOTICE.md') {
+        into 'META-INF'
+        rename { 'NOTICE-bluemap-draconic-evolution-addon.md' }
+    }
+    from('THIRD_PARTY.md') {
+        into 'META-INF'
+        rename { 'THIRD_PARTY-bluemap-draconic-evolution-addon.md' }
+    }
+    from('provenance/upstreams.json') { into 'META-INF/bluemap-draconic-evolution' }
+}
+
+tasks.named('sourcesJar', Jar).configure {
+    includeEmptyDirs = false
+    from('LICENSE') {
+        into 'META-INF'
+        rename { 'LICENSE-bluemap-draconic-evolution-addon' }
+    }
+    from('LICENSE-BlueMap') { into 'META-INF' }
+    from('NOTICE.md') {
+        into 'META-INF'
+        rename { 'NOTICE-bluemap-draconic-evolution-addon.md' }
+    }
+    from('THIRD_PARTY.md') {
+        into 'META-INF'
+        rename { 'THIRD_PARTY-bluemap-draconic-evolution-addon.md' }
+    }
+    from('provenance/upstreams.json') { into 'META-INF/bluemap-draconic-evolution' }
+}
+
+def productionJar = tasks.named('jar', Jar).flatMap { it.archiveFile }
+def publishedSourcesJar = tasks.named('sourcesJar', Jar).flatMap { it.archiveFile }
+
+tasks.register('verifyGeneratedGallery', Exec) {
+    commandLine 'python3', 'gallery/generate.py', '--check'
+}
+
+tasks.register('lintGallery', Exec) {
+    dependsOn tasks.named('verifyGeneratedGallery')
+    commandLine 'python3', 'gallery/lint.py'
+}
+
+tasks.register('verifyPinnedArtifacts', Exec) {
+    doFirst {
+        def arguments = [
+                'python3',
+                'tools/verify_pinned_artifacts.py',
+                '--manifest',
+                'provenance/upstreams.json'
+        ]
+        artifactPins.each { pin ->
+            def value = providers.gradleProperty(pin.property)
+            if (!value.isPresent()) {
+                throw new GradleException(
+                        "Set -P${pin.property} to the exact ${pin.key} runtime JAR."
+                )
+            }
+            arguments.add('--artifact')
+            arguments.add("${pin.key}=${value.get()}")
+        }
+        commandLine arguments
+    }
+}
+
+tasks.register('verifyProductionJar') {
+    dependsOn tasks.named('jar')
+    inputs.file(productionJar)
+    doLast {
+        def zip = new java.util.zip.ZipFile(inputs.files.singleFile)
+        try {
+            def entries = zip.entries().findAll { !it.directory }.collect { it.name }
+            def required = [
+                    'bluemap.addon.json',
+                    'io/github/janguenter/bluemap/draconicevolution/BlueMapDraconicEvolutionAddon.class',
+                    'META-INF/LICENSE-bluemap-draconic-evolution-addon',
+                    'META-INF/LICENSE-BlueMap',
+                    'META-INF/NOTICE-bluemap-draconic-evolution-addon.md',
+                    'META-INF/THIRD_PARTY-bluemap-draconic-evolution-addon.md',
+                    'META-INF/bluemap-draconic-evolution/upstreams.json'
+            ]
+            def missing = required.findAll { !entries.contains(it) }
+            if (!missing.isEmpty()) {
+                throw new GradleException("Production JAR is missing: ${missing}")
+            }
+            def descriptor = new groovy.json.JsonSlurper().parseText(
+                    zip.getInputStream(zip.getEntry('bluemap.addon.json')).getText('UTF-8')
+            )
+            if (descriptor.id != addon_id
+                    || descriptor.entrypoint != 'io.github.janguenter.bluemap.draconicevolution.BlueMapDraconicEvolutionAddon'
+                    || descriptor.dependencies != []
+                    || descriptor['soft-dependencies'] != []) {
+                throw new GradleException('BlueMap add-on descriptor mismatch')
+            }
+            def candidateIds = new groovy.json.JsonSlurper()
+                    .parse(file('provenance/upstreams.json')).artifacts*.mod_id
+            def forbidden = entries.findAll { entry ->
+                entry.endsWith('.jar')
+                        || entry == 'META-INF/neoforge.mods.toml'
+                        || entry == 'fabric.mod.json'
+                        || entry.endsWith('.mixins.json')
+                        || entry.startsWith('net/minecraft/')
+                        || entry.startsWith('net/neoforged/')
+                        || entry.startsWith('gallery/')
+                        || entry.endsWith('/bootstrap.json')
+                        || (entry.endsWith('.class')
+                            && !entry.startsWith('io/github/janguenter/bluemap/draconicevolution/'))
+                        || candidateIds.any { entry.startsWith("assets/${it}/") }
+            }
+            if (!forbidden.isEmpty()) {
+                throw new GradleException(
+                        "Production JAR contains forbidden entries: ${forbidden}"
+                )
+            }
+        } finally {
+            zip.close()
+        }
+    }
+}
+
+tasks.register('verifySourcesJar') {
+    dependsOn tasks.named('sourcesJar')
+    inputs.file(publishedSourcesJar)
+    doLast {
+        def zip = new java.util.zip.ZipFile(inputs.files.singleFile)
+        try {
+            def entries = zip.entries().findAll { !it.directory }.collect { it.name }
+            def required = [
+                    'io/github/janguenter/bluemap/draconicevolution/BlueMapDraconicEvolutionAddon.java',
+                    'bluemap.addon.json',
+                    'META-INF/LICENSE-bluemap-draconic-evolution-addon',
+                    'META-INF/LICENSE-BlueMap',
+                    'META-INF/bluemap-draconic-evolution/upstreams.json'
+            ]
+            def missing = required.findAll { !entries.contains(it) }
+            def projectJava = entries.findAll { it.endsWith('.java') }
+            def foreignJava = projectJava.findAll {
+                !it.startsWith('io/github/janguenter/bluemap/draconicevolution/')
+            }
+            def candidateIds = new groovy.json.JsonSlurper()
+                    .parse(file('provenance/upstreams.json')).artifacts*.mod_id
+            def forbidden = entries.findAll { entry ->
+                entry.endsWith('.class')
+                        || entry.endsWith('.jar')
+                        || entry == 'META-INF/neoforge.mods.toml'
+                        || entry == 'fabric.mod.json'
+                        || entry.endsWith('.mixins.json')
+                        || entry.startsWith('net/minecraft/')
+                        || entry.startsWith('net/neoforged/')
+                        || entry.startsWith('gallery/')
+                        || entry.endsWith('/bootstrap.json')
+                        || candidateIds.any { entry.startsWith("assets/${it}/") }
+            }
+            if (!missing.isEmpty()
+                    || projectJava.isEmpty()
+                    || !foreignJava.isEmpty()
+                    || !forbidden.isEmpty()) {
+                throw new GradleException(
+                        "Sources JAR boundary mismatch: missing=${missing}, "
+                                + "foreignJava=${foreignJava}, forbidden=${forbidden}"
+                )
+            }
+        } finally {
+            zip.close()
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('verifyProductionJar')
+    dependsOn tasks.named('verifySourcesJar')
+}
+
+tasks.register('prototypeCheck') {
+    dependsOn tasks.named('check')
+    dependsOn tasks.named('verifyPinnedArtifacts')
+    dependsOn tasks.named('lintGallery')
+}
+
+def verifyAcceptedFile = { File candidate, String sizeProperty, String hashProperty ->
+    def expectedSize = providers.gradleProperty(sizeProperty).get().toLong()
+    def expectedSha256 = providers.gradleProperty(hashProperty).get()
+    if (expectedSize <= 0 || expectedSha256 == 'PENDING') {
+        throw new GradleException("Release identity ${sizeProperty}/${hashProperty} is unsealed")
+    }
+    def actualSha256 = java.security.MessageDigest.getInstance('SHA-256')
+            .digest(candidate.bytes)
+            .encodeHex()
+            .toString()
+    if (candidate.length() != expectedSize || actualSha256 != expectedSha256) {
+        throw new GradleException(
+                "Accepted artifact mismatch for ${candidate}: "
+                        + "${candidate.length()} bytes, SHA-256 ${actualSha256}"
+        )
+    }
+}
+
+tasks.register('verifyAcceptedProductionJar') {
+    dependsOn tasks.named('jar')
+    inputs.file(productionJar)
+    doLast {
+        verifyAcceptedFile(
+                inputs.files.singleFile,
+                'accepted_jar_size',
+                'accepted_jar_sha256'
+        )
+    }
+}
+
+tasks.register('verifyAcceptedSourcesJar') {
+    dependsOn tasks.named('sourcesJar')
+    inputs.file(publishedSourcesJar)
+    doLast {
+        verifyAcceptedFile(
+                inputs.files.singleFile,
+                'accepted_sources_jar_size',
+                'accepted_sources_jar_sha256'
+        )
+    }
+}
+
+tasks.register('verifyNoScaffoldMarkers') {
+    def markerFiles = files(
+            fileTree('src') {
+                include '**/*.java', '**/*.json', '**/*.toml', '**/*.mcmeta'
+            },
+            fileTree('gallery') {
+                include '**/*.py', '**/*.sh', '**/*.md', '**/*.json',
+                        '**/*.mcmeta', '**/*.mcfunction', '**/*.tsv'
+            },
+            fileTree('tools') { include '**/*.py', '**/*.sh' },
+            fileTree('docs') { include '**/*.md' },
+            fileTree('.github') { include '**/*.yml', '**/*.yaml' },
+            fileTree('provenance') { include '**/*.json' },
+            files(
+                    'AGENTS.md', 'CHANGELOG.md', 'README.md', 'NOTICE.md',
+                    'THIRD_PARTY.md', 'build.gradle', 'settings.gradle',
+                    'gradle.properties'
+            )
+    )
+    inputs.files(markerFiles)
+    doLast {
+        def implementationMarker = 'SCAFFOLD_' + 'NOT_IMPLEMENTED'
+        def unresolvedPattern = ~/@{2}[A-Z][A-Z0-9_]*@{2}/
+        def violations = []
+        markerFiles.files.findAll { it.isFile() }.sort().each { candidate ->
+            def content = candidate.getText('UTF-8')
+            if (content.contains(implementationMarker)
+                    || unresolvedPattern.matcher(content).find()) {
+                violations.add(project.relativePath(candidate))
+            }
+        }
+        if (!violations.isEmpty()) {
+            throw new GradleException("Release scaffold markers remain: ${violations}")
+        }
+    }
+}
+
+tasks.register('verifyStagedEquivalence', Exec) {
+    dependsOn tasks.named('jar')
+    doFirst {
+        commandLine 'python3', 'tools/verify_staged_equivalence.py',
+                '--jar', productionJar.get().asFile,
+                '--entries', 'provenance/accepted-staging-entries.sha256',
+                '--expected-version', project.version.toString()
+    }
+}
+
+tasks.register('verifyPublicationArtifacts') {
+    dependsOn tasks.named('generatePomFileForAddonPublication')
+    dependsOn tasks.named('generateMetadataFileForAddonPublication')
+    doLast {
+        verifyAcceptedFile(
+                file('build/publications/addon/pom-default.xml'),
+                'accepted_pom_size',
+                'accepted_pom_sha256'
+        )
+        verifyAcceptedFile(
+                file('build/publications/addon/module.json'),
+                'accepted_module_size',
+                'accepted_module_sha256'
+        )
+        def module = new groovy.json.JsonSlurper()
+                .parse(file('build/publications/addon/module.json'))
+        def pom = file('build/publications/addon/pom-default.xml').text
+        if (!pom.contains("<version>${project.version}</version>")
+                || module.component.version != project.version.toString()
+                || project.version.toString().endsWith('-SNAPSHOT')) {
+            throw new GradleException('Publication metadata is not the final release version')
+        }
+    }
+}
+
+tasks.register('verifyReleaseMetadata') {
+    doLast {
+        def expectedTag = "v${project.version}"
+        def requestedTag = providers.gradleProperty('releaseTag').getOrElse('')
+        if (project.version.toString().endsWith('-SNAPSHOT')) {
+            throw new GradleException('Release versions must not end in -SNAPSHOT')
+        }
+        if (requestedTag != expectedTag) {
+            throw new GradleException(
+                    "Release tag mismatch: ${requestedTag ?: '<unset>'} != ${expectedTag}"
+            )
+        }
+        def release = new groovy.json.JsonSlurper()
+                .parse(file('provenance/release.json'))
+        def expectedRepository = 'https://github.com/jan-guenter/bluemap-draconic-evolution-addon'
+        if (release.status != 'owner-accepted-release-candidate'
+                || release.version != project.version.toString()
+                || release.repository != expectedRepository
+                || !(release.owner_accepted_staging instanceof Map)
+                || release.owner_accepted_staging.isEmpty()
+                || release.owner_accepted_staging.visual_acceptance != true
+                || !(release.accepted_staging_entries instanceof Map)
+                || release.accepted_staging_entries.isEmpty()
+                || !(release.final_release_artifacts instanceof Map)
+                || release.final_release_artifacts.isEmpty()) {
+            throw new GradleException('Release provenance is not sealed')
+        }
+
+        def entryManifest = file('provenance/accepted-staging-entries.sha256')
+        def acceptedEntries = release.accepted_staging_entries
+        def entryLines = entryManifest.readLines('UTF-8').findAll { !it.isBlank() }
+        def entrySha256 = java.security.MessageDigest.getInstance('SHA-256')
+                .digest(entryManifest.bytes).encodeHex().toString()
+        if (acceptedEntries.path != 'provenance/accepted-staging-entries.sha256'
+                || acceptedEntries.entry_count != entryLines.size()
+                || acceptedEntries.sha256 != entrySha256) {
+            throw new GradleException('Accepted staging entry provenance mismatch')
+        }
+
+        def expectedArtifacts = [
+                production_jar: [
+                        file_name: "${artifact_id}-${project.version}.jar",
+                        size: providers.gradleProperty('accepted_jar_size').get().toLong(),
+                        sha256: providers.gradleProperty('accepted_jar_sha256').get()
+                ],
+                sources_jar: [
+                        file_name: "${artifact_id}-${project.version}-sources.jar",
+                        size: providers.gradleProperty('accepted_sources_jar_size').get().toLong(),
+                        sha256: providers.gradleProperty('accepted_sources_jar_sha256').get()
+                ],
+                pom: [
+                        file_name: "${artifact_id}-${project.version}.pom",
+                        size: providers.gradleProperty('accepted_pom_size').get().toLong(),
+                        sha256: providers.gradleProperty('accepted_pom_sha256').get()
+                ],
+                gradle_module: [
+                        file_name: "${artifact_id}-${project.version}.module.json",
+                        size: providers.gradleProperty('accepted_module_size').get().toLong(),
+                        sha256: providers.gradleProperty('accepted_module_sha256').get()
+                ]
+        ]
+        expectedArtifacts.each { name, expected ->
+            def recorded = release.final_release_artifacts[name]
+            if (!(recorded instanceof Map)
+                    || recorded.file_name != expected.file_name
+                    || recorded.size != expected.size
+                    || recorded.sha256 != expected.sha256) {
+                throw new GradleException("Release provenance mismatch for ${name}")
+            }
+        }
+    }
+}
+
+tasks.register('verifyReleaseCandidate') {
+    dependsOn tasks.named('prototypeCheck')
+    dependsOn tasks.named('verifyAcceptedProductionJar')
+    dependsOn tasks.named('verifyAcceptedSourcesJar')
+    dependsOn tasks.named('verifyNoScaffoldMarkers')
+    dependsOn tasks.named('verifyStagedEquivalence')
+    dependsOn tasks.named('verifyPublicationArtifacts')
+    dependsOn tasks.named('verifyReleaseMetadata')
+}
+
+publishing {
+    publications {
+        addon(MavenPublication) {
+            from components.java
+            artifactId = artifact_id
+            pom {
+                name = addon_name
+                description = 'Exact-profile BlueMap rendering for Draconic Evolution.'
+                url = 'https://github.com/jan-guenter/bluemap-draconic-evolution-addon'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://spdx.org/licenses/MIT.html'
+                        distribution = 'repo'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/jan-guenter/bluemap-draconic-evolution-addon'
+                    connection = 'scm:git:https://github.com/jan-guenter/bluemap-draconic-evolution-addon.git'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'GitHubPackages'
+            url = uri('https://maven.pkg.github.com/jan-guenter/bluemap-draconic-evolution-addon')
+            credentials {
+                username = System.getenv('GITHUB_ACTOR')
+                password = System.getenv('GITHUB_TOKEN')
+            }
+        }
+    }
+}
