@@ -1,2 +1,16 @@
 case_id	label	x	y	z	block_state	expected
-stock-control	stone stock rendering control	176	100	175	minecraft:stone	stock-visible
+basic-io	basic direct I/O crystal	172	100	172	draconicevolution:basic_io_crystal	custom-static
+basic-relay	basic relay crystal	176	100	172	draconicevolution:basic_relay_crystal	custom-static
+basic-wireless	basic wireless crystal	180	100	172	draconicevolution:basic_wireless_crystal	custom-static
+wyvern-io	wyvern direct I/O crystal	184	100	172	draconicevolution:wyvern_io_crystal	custom-static
+wyvern-relay	wyvern relay crystal	188	100	172	draconicevolution:wyvern_relay_crystal	custom-static
+wyvern-wireless	wyvern wireless crystal	172	100	176	draconicevolution:wyvern_wireless_crystal	custom-static
+draconic-io	draconic direct I/O crystal	176	100	176	draconicevolution:draconic_io_crystal	custom-static
+draconic-relay	draconic relay crystal	180	100	176	draconicevolution:draconic_relay_crystal	custom-static
+draconic-wireless	draconic wireless crystal	184	100	176	draconicevolution:draconic_wireless_crystal	custom-static
+chaos-crystal	chaos crystal static outer shell	188	100	176	draconicevolution:chaos_crystal	custom-static
+draconium-chest	closed Draconium chest	172	100	180	draconicevolution:draconium_chest	custom-static
+reactor-core	neutral reactor core	176	100	180	draconicevolution:reactor_core	custom-static
+reactor-injector	idle reactor injector	180	100	180	draconicevolution:reactor_injector	custom-static
+reactor-stabilizer	idle reactor stabilizer	184	100	180	draconicevolution:reactor_stabilizer	custom-static
+stock-control	stone stock rendering control	188	100	180	minecraft:stone	stock-visible

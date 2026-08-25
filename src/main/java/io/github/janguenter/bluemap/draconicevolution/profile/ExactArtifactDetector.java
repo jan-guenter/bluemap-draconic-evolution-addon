@@ -20,6 +20,7 @@ import java.util.HexFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -58,6 +59,14 @@ public final class ExactArtifactDetector {
             }
         }
         return true;
+    }
+
+    /** Returns the one exact admitted artifact for a pin, when present. */
+    public static Optional<Path> match(Iterable<Path> roots, ArtifactPin pin) {
+        Objects.requireNonNull(roots, "roots");
+        Objects.requireNonNull(pin, "pin");
+        List<Path> bounded = boundedRoots(roots);
+        return bounded == null ? Optional.empty() : Optional.ofNullable(findOne(bounded, pin));
     }
 
     private static List<Path> boundedRoots(Iterable<Path> roots) {
