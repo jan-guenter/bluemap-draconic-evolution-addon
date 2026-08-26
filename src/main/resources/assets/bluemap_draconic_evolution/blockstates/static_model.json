@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "renderer": "bluemap_draconic_evolution:static_model",
+      "model": "bluemap:block/missing"
+    }
+  }
+}

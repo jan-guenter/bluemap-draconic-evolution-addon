@@ -1,10 +1,75 @@
 {
-  "accepted_staging_entries": null,
-  "final_release_artifacts": null,
-  "note": "Populate only after owner visual acceptance; this file is not packaged.",
-  "owner_accepted_staging": null,
-  "repository": "https://github.com/jan-guenter/bluemap-draconic-evolution-addon",
   "schema_version": 1,
-  "status": "prototype-not-owner-accepted",
-  "version": "0.1.0-SNAPSHOT"
+  "status": "owner-accepted-release-candidate",
+  "version": "0.1.0-alpha.1",
+  "release_date": "2026-08-26",
+  "repository": "https://github.com/jan-guenter/bluemap-draconic-evolution-addon",
+  "tag": "v0.1.0-alpha.1",
+  "maven_coordinate": "io.github.jan-guenter:bluemap-draconic-evolution-addon:0.1.0-alpha.1",
+  "owner_accepted_staging": {
+    "accepted_at": "2026-08-26",
+    "commit": "185f67de8ce99ce0f203e71001dcfd98561d46e2",
+    "tree": "102cc51d633883abeb028c07f2bfad70ecc1a4a1",
+    "production_jar_size": 149302,
+    "production_jar_sha256": "595a22f8d4df9ad7344afc5f3bf855685b23e773fbc249e4e033c9b7d5b1edcd",
+    "accepted_at_map": "draconicevolution_animation",
+    "visual_acceptance": true
+  },
+  "accepted_staging_entries": {
+    "path": "provenance/accepted-staging-entries.sha256",
+    "entry_count": 40,
+    "sha256": "3fde9d289292f3513211b7ad861b08d59a582a7a8757bf245c6f0da7497cc7e1"
+  },
+  "final_release_artifacts": {
+    "production_jar": {
+      "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.1.jar",
+      "size": 149301,
+      "sha256": "78281d7a3a8f2badfd0c7fb01312d3a15f0adcf261889e9b662b3f5ab33403ef"
+    },
+    "sources_jar": {
+      "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.1-sources.jar",
+      "size": 91759,
+      "sha256": "80a5da38d1e26c525a61b67175cd99b5ea1e8a8c90945cfeb354fb08b2c6ca7f"
+    },
+    "pom": {
+      "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.1.pom",
+      "size": 1383,
+      "sha256": "73636c790f5be28e3b027355b2faff5a6e47875f01eebe590b844b8477e4a8d9"
+    },
+    "gradle_module": {
+      "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.1.module.json",
+      "size": 2896,
+      "sha256": "c289eaa6c943338b9f59d57ec20a551a29cfd59e082950223b07aa5d188945e5"
+    }
+  },
+  "staged_equivalence": {
+    "entry_manifest": "provenance/accepted-staging-entries.sha256",
+    "identical_non_manifest_entries": 40,
+    "whole_jar_byte_identical": false,
+    "only_changed_entry_bytes": "META-INF/MANIFEST.MF",
+    "change_reason": "Implementation-Version changed from the accepted SNAPSHOT marker to the final release version."
+  },
+  "gallery": {
+    "archive_file_name": "draconicevolution-gallery-release.zip",
+    "size": 2532,
+    "sha256": "9e6fcc7c16c973355fe35aa7a24dcf08efb8b809e010155a82fc7015cc4d9cc5",
+    "review_cases": 15,
+    "published_as_release_asset": false
+  },
+  "ephemeral_ci_inputs": {
+    "draconicEvolution": {
+      "curseforge_project": 223565,
+      "curseforge_file": 7584459,
+      "size": 6045942,
+      "sha256": "623d7d58e58428a206015b56bf67387c79ff6d97f7221cff23b1dad0bed9544e"
+    },
+    "policy": "Downloaded only into the ephemeral runner, verified before use, and never bundled or uploaded."
+  },
+  "verification": {
+    "production_jar_exact_byte_gate": true,
+    "sources_jar_exact_byte_gate": true,
+    "publication_metadata_exact_byte_gate": true,
+    "staged_equivalence_gate": true,
+    "exact_input_gate": true
+  }
 }

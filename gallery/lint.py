@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Lint the generated placeholder gallery without starting Minecraft."""
+"""Lint the generated Draconic Evolution gallery without starting Minecraft."""
 
 from __future__ import annotations
 
@@ -31,36 +31,45 @@ def main() -> int:
     )
     if load_tag != {"values": [f"{cases.NAMESPACE}:load"]}:
         raise ValueError("load tag differs from the exact namespace")
-    if len(cases.PLACEMENTS) != 1:
-        raise ValueError("placeholder must contain exactly one stock control")
-
-    placement = cases.PLACEMENTS[0]
-    if placement.block_state != "minecraft:stone" or placement.expected != (
-        "stock-visible"
-    ):
-        raise ValueError("placeholder must remain an honest stone stock control")
     minimum_x, minimum_y, minimum_z, maximum_x, maximum_y, maximum_z = (
         cases.ENVELOPE
     )
-    if not (
-        minimum_x <= placement.x <= maximum_x
-        and minimum_y <= placement.y <= maximum_y
-        and minimum_z <= placement.z <= maximum_z
-    ):
-        raise ValueError("placeholder placement escaped its bounded envelope")
+    case_ids = {placement.case_id for placement in cases.PLACEMENTS}
+    positions = {(placement.x, placement.y, placement.z) for placement in cases.PLACEMENTS}
+    if len(case_ids) != len(cases.PLACEMENTS) or len(positions) != len(cases.PLACEMENTS):
+        raise ValueError("gallery case identifiers and positions must be unique")
+    controls = [
+        placement
+        for placement in cases.PLACEMENTS
+        if placement.block_state == "minecraft:stone"
+        and placement.expected == "stock-visible"
+    ]
+    if len(controls) != 1:
+        raise ValueError("gallery must contain exactly one stone stock control")
+    for placement in cases.PLACEMENTS:
+        if not (
+            minimum_x <= placement.x <= maximum_x
+            and minimum_y <= placement.y <= maximum_y
+            and minimum_z <= placement.z <= maximum_z
+        ):
+            raise ValueError(f"placement escaped gallery envelope: {placement.case_id}")
+        if not placement.block_state.startswith(("draconicevolution:", "minecraft:")):
+            raise ValueError(f"unexpected block namespace: {placement.block_state}")
 
     function_root = ROOT / f"datapack/data/{cases.NAMESPACE}/function"
     functions = "\n".join(
         path.read_text(encoding="utf-8")
         for path in sorted(function_root.glob("*.mcfunction"))
     )
-    if len(re.findall(r"^setblock ", functions, re.MULTILINE)) != 1:
-        raise ValueError("placeholder must place exactly one block")
+    if len(re.findall(r"^setblock ", functions, re.MULTILINE)) != len(
+        cases.PLACEMENTS
+    ):
+        raise ValueError("gallery setblock count differs from the case list")
     lowered = functions.lower()
     for forbidden in ("summon ", "data merge", "op ", "deop ", "stop "):
         if forbidden in lowered:
-            raise ValueError(f"forbidden placeholder command: {forbidden}")
-    print("placeholder gallery lint passed: one bounded stock control")
+            raise ValueError(f"forbidden gallery command: {forbidden}")
+    print(f"gallery lint passed: {len(cases.PLACEMENTS)} bounded cases")
     return 0
 
 

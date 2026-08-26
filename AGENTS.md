@@ -21,7 +21,7 @@ Mixins, or world state.
 ## Development contract
 
 - Preserve stock rendering while the runtime/profile is absent, duplicated,
-  unsupported, malformed, disabled, or not yet implemented.
+  unsupported, malformed, or disabled.
 - Keep the BlueMap internal API behind `adapter/bluemap522`.
 - Keep exact candidate identities and resource contracts in the profile.
 - Keep state/NBT decoding, normalized data, and mesh emission separate.
@@ -30,12 +30,11 @@ Mixins, or world state.
 - Gallery cases and renderer facts are family-owned; do not move them back to
   the generic scaffold.
 
-`SCAFFOLD_NOT_IMPLEMENTED` is permitted only during the fast prototype phase.
-The release gate rejects it.
+The release gate rejects unresolved scaffold markers.
 
 ## Commands
 
-Compile and test the safe seed:
+Compile and test the add-on:
 
 ```bash
 gradle --no-daemon -PbluemapSourcePath=../bluemap-backport clean check build

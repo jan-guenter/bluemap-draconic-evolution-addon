@@ -1,7 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.1.0-alpha.1 - 2026-08-26
 
-- Generated a fail-closed Java 21 BlueMap add-on seed for `draconicevolution-3.1.4.632`.
-- SCAFFOLD_NOT_IMPLEMENTED: renderer implementation and visual acceptance
-  remain pending.
+- Added a fail-closed Java 21 BlueMap add-on for `draconicevolution-3.1.4.632`.
+- Added deterministic native BlueMap particle orbits for the six relay and
+  wireless energy crystals, plus the stationary tier glow used by the three
+  direct I/O crystals. Draconium Chest, Chaos Crystal, and the three reactor
+  components use static custom models.
+- Added a bounded fifteen-case comparison gallery for owner visual review.
