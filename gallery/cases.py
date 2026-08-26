@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
-"""Bounded Draconic Evolution static-rendering comparison cases."""
+"""Bounded Draconic Evolution rendering comparison cases."""
 
 from __future__ import annotations
 
@@ -24,23 +24,23 @@ class Placement:
 
 PLACEMENTS = (
     Placement("basic-io", "basic direct I/O crystal", 172, 100, 172,
-              "draconicevolution:basic_io_crystal", "custom-static"),
+              "draconicevolution:basic_io_crystal", "custom-animated"),
     Placement("basic-relay", "basic relay crystal", 176, 100, 172,
-              "draconicevolution:basic_relay_crystal", "custom-static"),
+              "draconicevolution:basic_relay_crystal", "custom-animated"),
     Placement("basic-wireless", "basic wireless crystal", 180, 100, 172,
-              "draconicevolution:basic_wireless_crystal", "custom-static"),
+              "draconicevolution:basic_wireless_crystal", "custom-animated"),
     Placement("wyvern-io", "wyvern direct I/O crystal", 184, 100, 172,
-              "draconicevolution:wyvern_io_crystal", "custom-static"),
+              "draconicevolution:wyvern_io_crystal", "custom-animated"),
     Placement("wyvern-relay", "wyvern relay crystal", 188, 100, 172,
-              "draconicevolution:wyvern_relay_crystal", "custom-static"),
+              "draconicevolution:wyvern_relay_crystal", "custom-animated"),
     Placement("wyvern-wireless", "wyvern wireless crystal", 172, 100, 176,
-              "draconicevolution:wyvern_wireless_crystal", "custom-static"),
+              "draconicevolution:wyvern_wireless_crystal", "custom-animated"),
     Placement("draconic-io", "draconic direct I/O crystal", 176, 100, 176,
-              "draconicevolution:draconic_io_crystal", "custom-static"),
+              "draconicevolution:draconic_io_crystal", "custom-animated"),
     Placement("draconic-relay", "draconic relay crystal", 180, 100, 176,
-              "draconicevolution:draconic_relay_crystal", "custom-static"),
+              "draconicevolution:draconic_relay_crystal", "custom-animated"),
     Placement("draconic-wireless", "draconic wireless crystal", 184, 100, 176,
-              "draconicevolution:draconic_wireless_crystal", "custom-static"),
+              "draconicevolution:draconic_wireless_crystal", "custom-animated"),
     Placement("chaos-crystal", "chaos crystal static outer shell", 188, 100, 176,
               "draconicevolution:chaos_crystal", "custom-static"),
     Placement("draconium-chest", "closed Draconium chest", 172, 100, 180,

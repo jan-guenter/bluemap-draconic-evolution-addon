@@ -34,9 +34,13 @@ final class StaticModelRenderer implements BlockRenderer {
     ) {
         this.resourcePack = resourcePack;
         this.stock = new ResourceModelRenderer(resourcePack, textures, settings);
-        this.emitter = new StaticModelEmitter(resourcePack, textures, settings);
         this.runtime = runtime;
-        this.installed = StaticModelPackData.get(resourcePack);
+        StaticModelPackData.Data data = StaticModelPackData.get(resourcePack);
+        this.installed = data == null ? null : data.models();
+        this.emitter = new StaticModelEmitter(
+                resourcePack, textures, settings,
+                data == null ? java.util.List.of() : data.crystalPoseTextures()
+        );
     }
 
     @Override

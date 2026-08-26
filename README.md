@@ -4,9 +4,10 @@ A Java 21 BlueMap add-on for the exact `draconicevolution-3.1.4.632` profile in 
 `1.2.0` / Minecraft `1.21.1`.
 
 Status: visual-review prototype. The exact artifact gate and BlueMap 5.22
-adapter load fourteen deterministic static models from the operator-installed
-Draconic Evolution JAR. The implementation covers nine energy crystals,
-Draconium Chest, Chaos Crystal, and the three reactor components.
+adapter load fourteen deterministic models from the operator-installed
+Draconic Evolution JAR. The nine energy crystals use BlueMap's native texture
+animation clock to rotate sampled geometry. Draconium Chest, Chaos Crystal,
+and the three reactor components remain static.
 
 ## Build
 
@@ -29,9 +30,13 @@ Set `-Dbluemap.draconicevolution.disabled=true` to leave the exact profile inact
 
 ## Scope boundary
 
-The prototype freezes animation and activity in neutral poses. Links, beams,
-shields, particles, displayed-item contents, formed Energy Core structures,
-and unsupported states stay stock unless the owner expands scope.
+Energy-crystal geometry uses eight sampled poses across the model's repeating
+60-degree sector. The poses run over a 419-tick cycle without JavaScript, UI,
+or marker overlays. Direct I/O crystal bases remain stationary. The client's
+procedural shader shimmer stays a static texture approximation.
+
+Links, beams, shields, particles, displayed-item contents, formed Energy Core
+structures, and unsupported states stay stock unless the owner expands scope.
 
 No Draconic Evolution binary, source, class, asset, captured mesh, or gallery is
 bundled in the add-on.
