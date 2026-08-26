@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.0-alpha.1 - 2026-08-26
 
 - Added a fail-closed Java 21 BlueMap add-on for `draconicevolution-3.1.4.632`.
 - Added deterministic native BlueMap particle orbits for the six relay and

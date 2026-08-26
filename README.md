@@ -3,7 +3,7 @@
 A Java 21 BlueMap add-on for the exact `draconicevolution-3.1.4.632` profile in All the Mons
 `1.2.0` / Minecraft `1.21.1`.
 
-Status: visual-review prototype. The exact artifact gate and BlueMap 5.22
+Status: owner-accepted `0.1.0-alpha.1` release candidate. The exact artifact gate and BlueMap 5.22
 adapter load fourteen deterministic models from the operator-installed
 Draconic Evolution JAR. BlueMap's native texture clock drives permanent
 particle rings around the six relay and wireless crystals. The three direct
