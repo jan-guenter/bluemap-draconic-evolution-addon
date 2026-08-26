@@ -74,6 +74,7 @@ final class ProfileResourceExtension implements ResourcePackExtension {
             return Set.of();
         }
         Set<Key> result = new LinkedHashSet<>(sourceTextureKeys());
+        result.addAll(AnimatedCrystalTextures.sourceKeys());
         result.addAll(AnimatedCrystalTextures.keys());
         return Set.copyOf(result);
     }
@@ -96,9 +97,14 @@ final class ProfileResourceExtension implements ResourcePackExtension {
             return;
         }
         List<Key> crystalPoses = List.of();
-        Texture crystal = resourcePack.getTextures().get(AnimatedCrystalTextures.SOURCE);
+        Texture energy = resourcePack.getTextures().get(
+                AnimatedCrystalTextures.ENERGY_SOURCE
+        );
+        Texture orb = resourcePack.getTextures().get(
+                AnimatedCrystalTextures.ORB_SOURCE
+        );
         try {
-            crystalPoses = AnimatedCrystalTextures.install(resourcePack, crystal);
+            crystalPoses = AnimatedCrystalTextures.install(resourcePack, energy, orb);
         } catch (IOException | RuntimeException exception) {
             animationFallback = "crystal-animation-"
                     + exception.getClass().getSimpleName();
@@ -139,7 +145,7 @@ final class ProfileResourceExtension implements ResourcePackExtension {
 
     private String animationMode() {
         return animationFallback == null
-                ? "nine energy crystals use an eight-pose, 419-tick spin"
+                ? "six energy-crystal particle rings use an eleven-pose, 503-tick orbit"
                 : "energy crystals use the static fallback (" + animationFallback + ")";
     }
 }

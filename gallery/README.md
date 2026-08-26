@@ -6,8 +6,9 @@ bounded comparison grid centered near `(180, 100, 176)`.
 The smooth-stone floor provides scale and contrast, with a clearance around the
 tall Chaos Crystal model.
 
-The nine energy-crystal cases expect native animated renderers. The other
-custom cases remain static.
+The six relay and wireless energy-crystal cases expect native particle-orbit
+animation. The three direct I/O cases expect a stationary center glow. The
+other custom cases remain static.
 
 Use the stable commands:
 

@@ -5,9 +5,10 @@ A Java 21 BlueMap add-on for the exact `draconicevolution-3.1.4.632` profile in 
 
 Status: visual-review prototype. The exact artifact gate and BlueMap 5.22
 adapter load fourteen deterministic models from the operator-installed
-Draconic Evolution JAR. The nine energy crystals use BlueMap's native texture
-animation clock to rotate sampled geometry. Draconium Chest, Chaos Crystal,
-and the three reactor components remain static.
+Draconic Evolution JAR. BlueMap's native texture clock drives permanent
+particle rings around the six relay and wireless crystals. The three direct
+I/O crystals use their tier-specific stationary center glow. Draconium Chest,
+Chaos Crystal, and the three reactor components remain static.
 
 ## Build
 
@@ -30,12 +31,15 @@ Set `-Dbluemap.draconicevolution.disabled=true` to leave the exact profile inact
 
 ## Scope boundary
 
-Energy-crystal geometry uses eight sampled poses across the model's repeating
-60-degree sector. The poses run over a 419-tick cycle without JavaScript, UI,
-or marker overlays. Direct I/O crystal bases remain stationary. The client's
-procedural shader shimmer stays a static texture approximation.
+Relay and wireless effects use eleven sampled particle poses over the client's
+approximately 503-tick primary orbit. Their tier-colored energy particles and
+red wireless or cyan relay particles share one native BlueMap animation clock,
+without JavaScript, UI, or marker overlays. Crystal bodies remain static, as do
+the direct I/O bases beneath their stationary glow. The client's procedural
+shader shimmer and dense camera-dependent particle count stay bounded
+approximations.
 
-Links, beams, shields, particles, displayed-item contents, formed Energy Core
+Links, transfer beams, shields, displayed-item contents, formed Energy Core
 structures, and unsupported states stay stock unless the owner expands scope.
 
 No Draconic Evolution binary, source, class, asset, captured mesh, or gallery is

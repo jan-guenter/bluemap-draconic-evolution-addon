@@ -14,15 +14,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
-/** Builds one shared pose mask driven by BlueMap's native texture clock. */
+/** Builds one shared particle-pose mask driven by BlueMap's native texture clock. */
 final class AnimatedCrystalTextures {
 
-    static final Key SOURCE = Key.parse("draconicevolution:models/crystal_no_shader");
+    static final Key ENERGY_SOURCE = Key.parse("draconicevolution:particle/energy_0");
+    static final Key ORB_SOURCE = Key.parse("draconicevolution:particle/white_orb");
     private static final Key KEY = Key.parse(
-            "bluemap_draconic_evolution:block/energy_crystal_spin_poses"
+            "bluemap_draconic_evolution:block/energy_crystal_particle_poses"
     );
-    private static final int EXPECTED_EDGE = 128;
+    private static final int SOURCE_EDGE = 32;
+    private static final int SLOT_EDGE = 64;
     private static final int MAX_TEXTURE_HEIGHT = 8_192;
 
     private AnimatedCrystalTextures() {
@@ -32,49 +35,76 @@ final class AnimatedCrystalTextures {
         return List.of(KEY);
     }
 
-    static List<Key> install(ResourcePack resourcePack, Texture source) throws IOException {
+    static Set<Key> sourceKeys() {
+        return Set.of(
+                ENERGY_SOURCE,
+                ORB_SOURCE,
+                Key.parse("draconicevolution:particle/energy_beam_basic"),
+                Key.parse("draconicevolution:particle/energy_beam_wyvern"),
+                Key.parse("draconicevolution:particle/energy_beam_draconic")
+        );
+    }
+
+    static List<Key> install(
+            ResourcePack resourcePack,
+            Texture energy,
+            Texture orb
+    ) throws IOException {
         if (resourcePack.getTextures().containsKey(KEY)) {
             throw new IOException("animated crystal texture key collision");
         }
-        resourcePack.getTextures().put(KEY, create(source));
+        resourcePack.getTextures().put(KEY, create(energy, orb));
         return List.copyOf(Collections.nCopies(EnergyCrystalAnimation.POSE_COUNT, KEY));
     }
 
-    static Texture create(Texture source) throws IOException {
-        BufferedImage image = source.getTextureImage();
-        if (image.getWidth() != EXPECTED_EDGE || image.getHeight() != EXPECTED_EDGE) {
-            throw new IOException("installed crystal texture dimensions changed");
+    static Texture create(Texture energy, Texture orb) throws IOException {
+        BufferedImage energyImage = energy.getTextureImage();
+        BufferedImage orbImage = orb.getTextureImage();
+        if (!expectedSize(energyImage) || !expectedSize(orbImage)) {
+            throw new IOException("installed crystal particle texture dimensions changed");
         }
         int poseCount = EnergyCrystalAnimation.POSE_COUNT;
-        int stripHeight = Math.multiplyExact(EXPECTED_EDGE, poseCount * poseCount);
+        int stripHeight = Math.multiplyExact(SLOT_EDGE, poseCount * poseCount);
         if (stripHeight > MAX_TEXTURE_HEIGHT) {
             throw new IOException("animated crystal texture exceeds height budget");
         }
-        int[] pixels = image.getRGB(
-                0, 0, EXPECTED_EDGE, EXPECTED_EDGE, null, 0, EXPECTED_EDGE
+        int[] energyPixels = energyImage.getRGB(
+                0, 0, SOURCE_EDGE, SOURCE_EDGE, null, 0, SOURCE_EDGE
+        );
+        int[] orbPixels = orbImage.getRGB(
+                0, 0, SOURCE_EDGE, SOURCE_EDGE, null, 0, SOURCE_EDGE
         );
         BufferedImage strip = new BufferedImage(
-                EXPECTED_EDGE, stripHeight, BufferedImage.TYPE_INT_ARGB
+                SLOT_EDGE, stripHeight, BufferedImage.TYPE_INT_ARGB
         );
         for (int frame = 0; frame < poseCount; frame++) {
             int activeSlot = frame * poseCount + frame;
+            int y = activeSlot * SLOT_EDGE;
             strip.setRGB(
-                    0, activeSlot * EXPECTED_EDGE,
-                    EXPECTED_EDGE, EXPECTED_EDGE, pixels, 0, EXPECTED_EDGE
+                    0, y, SOURCE_EDGE, SOURCE_EDGE,
+                    energyPixels, 0, SOURCE_EDGE
+            );
+            strip.setRGB(
+                    SOURCE_EDGE, y, SOURCE_EDGE, SOURCE_EDGE,
+                    orbPixels, 0, SOURCE_EDGE
             );
         }
         return Texture.from(KEY, strip, animationMeta());
+    }
+
+    private static boolean expectedSize(BufferedImage image) {
+        return image.getWidth() == SOURCE_EDGE && image.getHeight() == SOURCE_EDGE;
     }
 
     private static AnimationMeta animationMeta() {
         int poseCount = EnergyCrystalAnimation.POSE_COUNT;
         List<FrameMeta> frames = new ArrayList<>(poseCount);
         for (int index = 0; index < poseCount; index++) {
-            int ticks = index < 3 ? 53 : 52;
+            int ticks = index < 8 ? 46 : 45;
             frames.add(new FrameMeta(index * poseCount, ticks));
         }
         return new AnimationMeta(
-                true, EXPECTED_EDGE, EXPECTED_EDGE, 53, List.copyOf(frames)
+                true, SLOT_EDGE, SLOT_EDGE, 46, List.copyOf(frames)
         );
     }
 }

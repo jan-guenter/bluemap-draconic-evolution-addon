@@ -18,32 +18,40 @@ import org.junit.jupiter.api.Test;
 class AnimatedCrystalTexturesTest {
 
     @Test
-    void createsOneClockedEightPoseMaskAtlas() throws IOException {
-        BufferedImage sourceImage = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
-        sourceImage.setRGB(0, 0, 0xff123456);
-        sourceImage.setRGB(127, 127, 0xffabcdef);
-        Texture source = Texture.from(Key.parse("test:crystal"), sourceImage);
+    void createsOneClockedElevenPoseParticleAtlas() throws IOException {
+        BufferedImage energyImage = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+        energyImage.setRGB(0, 0, 0xff123456);
+        energyImage.setRGB(31, 31, 0xffabcdef);
+        BufferedImage orbImage = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+        orbImage.setRGB(0, 0, 0xff654321);
+        orbImage.setRGB(31, 31, 0xfffedcba);
+        Texture energy = Texture.from(Key.parse("test:energy"), energyImage);
+        Texture orb = Texture.from(Key.parse("test:orb"), orbImage);
 
-        Texture generated = AnimatedCrystalTextures.create(source);
+        Texture generated = AnimatedCrystalTextures.create(energy, orb);
 
         BufferedImage strip = generated.getTextureImage();
         int poses = EnergyCrystalAnimation.POSE_COUNT;
-        assertEquals(128, strip.getWidth());
-        assertEquals(128 * poses * poses, strip.getHeight());
+        assertEquals(64, strip.getWidth());
+        assertEquals(64 * poses * poses, strip.getHeight());
         for (int frame = 0; frame < poses; frame++) {
             for (int pose = 0; pose < poses; pose++) {
                 int slot = frame * poses + pose;
-                int expectedFirst = frame == pose ? 0xff123456 : 0;
-                int expectedLast = frame == pose ? 0xffabcdef : 0;
-                assertEquals(expectedFirst, strip.getRGB(0, slot * 128));
-                assertEquals(expectedLast, strip.getRGB(127, slot * 128 + 127));
+                int expectedEnergy = frame == pose ? 0xff123456 : 0;
+                int expectedOrb = frame == pose ? 0xff654321 : 0;
+                assertEquals(expectedEnergy, strip.getRGB(0, slot * 64));
+                assertEquals(expectedOrb, strip.getRGB(32, slot * 64));
+                assertEquals(frame == pose ? 0xffabcdef : 0,
+                        strip.getRGB(31, slot * 64 + 31));
+                assertEquals(frame == pose ? 0xfffedcba : 0,
+                        strip.getRGB(63, slot * 64 + 31));
             }
         }
         assertNotNull(generated.getAnimation());
         assertTrue(generated.getAnimation().isInterpolate());
-        assertEquals(53, generated.getAnimation().getFrametime());
+        assertEquals(46, generated.getAnimation().getFrametime());
         assertEquals(
-                List.of(0, 8, 16, 24, 32, 40, 48, 56),
+                List.of(0, 11, 22, 33, 44, 55, 66, 77, 88, 99, 110),
                 generated.getAnimation().getFrames().stream()
                         .map(frame -> frame.getIndex()).toList()
         );
@@ -60,12 +68,17 @@ class AnimatedCrystalTexturesTest {
                 Key.parse("test:changed"),
                 new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)
         );
-        assertThrows(IOException.class, () -> AnimatedCrystalTextures.create(changed));
+        Texture expected = Texture.from(
+                Key.parse("test:expected"),
+                new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB)
+        );
+        assertThrows(IOException.class,
+                () -> AnimatedCrystalTextures.create(changed, expected));
     }
 
     @Test
     void shiftsEachPoseIntoItsMaskSlot() {
         assertEquals(0.25F, StaticModelEmitter.poseV(0.25F, 0));
-        assertEquals(7.25F, StaticModelEmitter.poseV(0.25F, 7));
+        assertEquals(10.25F, StaticModelEmitter.poseV(0.25F, 10));
     }
 }
