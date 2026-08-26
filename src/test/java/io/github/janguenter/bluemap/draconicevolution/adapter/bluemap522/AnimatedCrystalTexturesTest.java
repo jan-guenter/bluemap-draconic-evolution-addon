@@ -3,9 +3,9 @@
 package io.github.janguenter.bluemap.draconicevolution.adapter.bluemap522;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.bluecolored.bluemap.core.resources.pack.resourcepack.texture.Texture;
 import de.bluecolored.bluemap.core.util.Key;
@@ -48,7 +48,7 @@ class AnimatedCrystalTexturesTest {
             }
         }
         assertNotNull(generated.getAnimation());
-        assertTrue(generated.getAnimation().isInterpolate());
+        assertFalse(generated.getAnimation().isInterpolate());
         assertEquals(8, generated.getAnimation().getFrametime());
         assertEquals(
                 List.of(0, 11, 22, 33, 44, 55, 66, 77, 88, 99, 110),

@@ -22,7 +22,7 @@ final class AnimatedCrystalTextures {
     static final Key ENERGY_SOURCE = Key.parse("draconicevolution:particle/energy_0");
     static final Key ORB_SOURCE = Key.parse("draconicevolution:particle/white_orb");
     private static final Key KEY = Key.parse(
-            "bluemap_draconic_evolution:block/energy_crystal_particle_poses"
+            "bluemap_draconic_evolution:block/energy_crystal_particle_poses_v2"
     );
     private static final int SOURCE_EDGE = 32;
     private static final int SLOT_EDGE = 64;
@@ -103,7 +103,7 @@ final class AnimatedCrystalTextures {
             frames.add(new FrameMeta(index * poseCount, 8));
         }
         return new AnimationMeta(
-                true, SLOT_EDGE, SLOT_EDGE, 8, List.copyOf(frames)
+                false, SLOT_EDGE, SLOT_EDGE, 8, List.copyOf(frames)
         );
     }
 }
