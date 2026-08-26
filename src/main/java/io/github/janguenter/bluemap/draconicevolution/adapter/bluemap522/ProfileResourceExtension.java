@@ -145,7 +145,7 @@ final class ProfileResourceExtension implements ResourcePackExtension {
 
     private String animationMode() {
         return animationFallback == null
-                ? "six energy-crystal particle rings use an eleven-pose, 503-tick orbit"
+                ? "six energy-crystal particle rings use an eleven-pose, 88-tick orbit"
                 : "energy crystals use the static fallback (" + animationFallback + ")";
     }
 }

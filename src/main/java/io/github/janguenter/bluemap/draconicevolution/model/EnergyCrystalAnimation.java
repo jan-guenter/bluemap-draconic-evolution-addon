@@ -9,15 +9,15 @@ import java.util.List;
 public final class EnergyCrystalAnimation {
 
     public static final int POSE_COUNT = 11;
-    public static final int CYCLE_TICKS = 503;
+    public static final int CYCLE_TICKS = 88;
     private static final double FULL_TURN = Math.PI * 2D;
 
     private static final double[] PRIMARY_ANGLES = {0D, 0.91D, 2.18D, 3.69D, 5.25D};
     private static final float[] PRIMARY_RADII = {0.38F, 0.41F, 0.40F, 0.37F, 0.42F};
     private static final float[] PRIMARY_HEIGHTS = {0.52F, 0.47F, 0.58F, 0.44F, 0.54F};
-    private static final float[] PRIMARY_SIZES = {0.040F, 0.032F, 0.035F, 0.030F, 0.038F};
+    private static final float[] PRIMARY_SIZES = {0.060F, 0.052F, 0.057F, 0.050F, 0.062F};
     private static final double[] SECONDARY_ANGLES = {0.35D, 1.91D, 3.20D, 5.05D};
-    private static final float[] SECONDARY_SIZES = {0.024F, 0.020F, 0.026F, 0.022F};
+    private static final float[] SECONDARY_SIZES = {0.040F, 0.035F, 0.043F, 0.038F};
 
     private EnergyCrystalAnimation() {
     }

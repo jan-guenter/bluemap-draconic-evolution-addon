@@ -100,11 +100,10 @@ final class AnimatedCrystalTextures {
         int poseCount = EnergyCrystalAnimation.POSE_COUNT;
         List<FrameMeta> frames = new ArrayList<>(poseCount);
         for (int index = 0; index < poseCount; index++) {
-            int ticks = index < 8 ? 46 : 45;
-            frames.add(new FrameMeta(index * poseCount, ticks));
+            frames.add(new FrameMeta(index * poseCount, 8));
         }
         return new AnimationMeta(
-                true, SLOT_EDGE, SLOT_EDGE, 46, List.copyOf(frames)
+                true, SLOT_EDGE, SLOT_EDGE, 8, List.copyOf(frames)
         );
     }
 }

@@ -49,7 +49,7 @@ class AnimatedCrystalTexturesTest {
         }
         assertNotNull(generated.getAnimation());
         assertTrue(generated.getAnimation().isInterpolate());
-        assertEquals(46, generated.getAnimation().getFrametime());
+        assertEquals(8, generated.getAnimation().getFrametime());
         assertEquals(
                 List.of(0, 11, 22, 33, 44, 55, 66, 77, 88, 99, 110),
                 generated.getAnimation().getFrames().stream()

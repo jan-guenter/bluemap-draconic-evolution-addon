@@ -31,13 +31,13 @@ Set `-Dbluemap.draconicevolution.disabled=true` to leave the exact profile inact
 
 ## Scope boundary
 
-Relay and wireless effects use eleven sampled particle poses over the client's
-approximately 503-tick primary orbit. Their tier-colored energy particles and
-red wireless or cyan relay particles share one native BlueMap animation clock,
-without JavaScript, UI, or marker overlays. Crystal bodies remain static, as do
-the direct I/O bases beneath their stationary glow. The client's procedural
-shader shimmer and dense camera-dependent particle count stay bounded
-approximations.
+Relay and wireless effects use eleven sampled particle poses over a condensed
+88-tick orbit that remains legible at BlueMap scale. Their tier-colored energy
+particles and red wireless or cyan relay particles share one native BlueMap
+animation clock, without JavaScript, UI, or marker overlays. Crystal bodies
+remain static, as do the direct I/O bases beneath their stationary glow. The
+client's procedural shader shimmer, slower orbit timing, and dense
+camera-dependent particle count stay bounded approximations.
 
 Links, transfer beams, shields, displayed-item contents, formed Energy Core
 structures, and unsupported states stay stock unless the owner expands scope.
