@@ -4,13 +4,18 @@ This repository starts inactive and stock-safe. Implement only the smallest
 observed Draconic Evolution rendering defect before staging.
 
 Before running Gradle gates, activate a Python 3.11 or newer virtual
-environment and install the exact development-only toolkit into it:
+environment, initialize the pinned toolkit submodule, and install the exact
+development-only toolkit into the environment:
 
 ```bash
+git submodule update --init --recursive -- tooling/bluemap-addon-toolkit
 python -m pip install --disable-pip-version-check --no-deps \
   --require-hashes --only-binary=:all: \
   --requirement requirements/toolkit.txt
 ```
+
+The requirement locks the 20,585-byte `v0.3.0-alpha.1` wheel at SHA-256
+`82f1ec53603646849a7c2d4b58f3fb7000413fe83043a302bee88cc88daeb8f7`.
 
 ## Prototype
 

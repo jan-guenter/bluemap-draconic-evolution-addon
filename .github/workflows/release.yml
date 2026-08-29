@@ -35,6 +35,7 @@ jobs:
         with:
           ref: ${{ env.RELEASE_TAG }}
           fetch-depth: 0
+          submodules: recursive
           persist-credentials: false
 
       - name: Verify immutable annotated release identity
@@ -90,7 +91,11 @@ jobs:
           python -m pip install --disable-pip-version-check \
             --no-deps --require-hashes --only-binary=:all: \
             --requirement requirements/toolkit.txt
-          test "$(bluemap-addon-toolkit --version)" = "0.1.0-alpha.1"
+          toolkit_version="$(sed -n \
+            's#^bluemap-addon-toolkit @ .*/releases/download/v\([^/]*\)/.*#\1#p' \
+            requirements/toolkit.txt)"
+          [[ "${toolkit_version}" =~ ^[0-9A-Za-z][0-9A-Za-z.+-]*$ ]]
+          test "$(bluemap-addon-toolkit --version)" = "${toolkit_version}"
 
       - name: Set up Gradle 9.6.1
         uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
