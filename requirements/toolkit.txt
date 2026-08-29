@@ -1,0 +1,2 @@
+bluemap-addon-toolkit @ https://github.com/jan-guenter/bluemap-addon-toolkit/releases/download/v0.1.0-alpha.1/bluemap_addon_toolkit-0.1.0a1-py3-none-any.whl \
+    --hash=sha256:1a82280178a6a8468b485893c2759f834e58743143bfe518d16d155512ca9491
