@@ -137,8 +137,9 @@ tasks.register('lintGallery', Exec) {
 tasks.register('verifyPinnedArtifacts', Exec) {
     doFirst {
         def arguments = [
-                'python3',
-                'tools/verify_pinned_artifacts.py',
+                'bluemap-addon-toolkit',
+                'artifacts',
+                'verify',
                 '--manifest',
                 'provenance/upstreams.json'
         ]
@@ -352,7 +353,7 @@ tasks.register('verifyNoScaffoldMarkers') {
 tasks.register('verifyStagedEquivalence', Exec) {
     dependsOn tasks.named('jar')
     doFirst {
-        commandLine 'python3', 'tools/verify_staged_equivalence.py',
+        commandLine 'bluemap-addon-toolkit', 'jar-entries', 'verify',
                 '--jar', productionJar.get().asFile,
                 '--entries', 'provenance/accepted-staging-entries.sha256',
                 '--expected-version', project.version.toString()
