@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "unpublished-migration-candidate",
+  "status": "owner-accepted-release-candidate",
   "published": false,
   "version": "0.1.0-alpha.2",
   "release_date": "2026-08-31",
@@ -72,6 +72,69 @@
     "exact_feature_backport_runtime_identity_gate": true,
     "gradle_9_6_1_clean_build": true,
     "gallery_lint": true,
-    "checkstyle": true
+    "checkstyle": true,
+    "release_candidate_gate": true,
+    "staged_equivalence": true
+  },
+  "owner_accepted_staging": {
+    "visual_acceptance": true,
+    "accepted_on": "2026-08-31",
+    "scope": "Owner accepted the five-gallery aggregate batch containing the Draconic Evolution static models and native crystal-particle animation.",
+    "integration_run": "bluemap-atmons-integration-20260831-tech-batch-523-native",
+    "candidate_manifest": {
+      "sha256": "5b42eb108509c0c497c29c933d2a6a242a6a9b2f602957d258c90fb29e2a4c8c",
+      "local_candidate_base_source_commit": "d6e361bcb1b384ab5fd2393fab17c1f4e0854e57",
+      "local_candidate_base_artifact": {
+        "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.2.jar",
+        "size": 153347,
+        "sha256": "6daec68810d57dc06c39503ffeb6bd4963e26f4bc9c6718ab7776c22db77b4cd"
+      },
+      "aggregate_staging_artifact": {
+        "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.1.jar",
+        "size": 153720,
+        "sha256": "dfd501d11ab0e5c23c2346a674bef3f11ba65aca4f7cb484168cd98a75db82db"
+      }
+    },
+    "gallery_render": {
+      "map_id": "atmons_integration",
+      "composition_id": "4c1139e67bee1f570824ac90bdc12a4331381946acf4cd593609c51c3a4c894a",
+      "layout_sha256": "5ea9a96c5e5b159057441a6eb6fbfdbf47aa06b95dadfcb2756246b117a04944",
+      "fresh_tile_evidence_sha256": "a9d997a033aa422cab225fbf058a25a4011e06c25889121770f9378edba0c69b",
+      "region_count": 4,
+      "tile_count": 589
+    },
+    "browser_capture": {
+      "state_sha256": "cbc1a6517f8979539b36e129145a6470ecba7a14f557240c8da4fef54db41104",
+      "screenshot_sha256": "9b65708dc8d2004ce50c71ffdf91491e50c1cc2ebb993c296249555f2a05cd2a",
+      "navigation_status": 200,
+      "context_lost": false
+    }
+  },
+  "accepted_staging_entries": {
+    "path": "provenance/accepted-staging-entries.sha256",
+    "entry_count": 41,
+    "sha256": "10da645be4fe89dcff6577201c7934ad7c088f02d2c71973845a9146594f6e63"
+  },
+  "final_release_artifacts": {
+    "production_jar": {
+      "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.2.jar",
+      "size": 153347,
+      "sha256": "6daec68810d57dc06c39503ffeb6bd4963e26f4bc9c6718ab7776c22db77b4cd"
+    },
+    "sources_jar": {
+      "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.2-sources.jar",
+      "size": 95974,
+      "sha256": "14a22a11c907f1799611874d9274dbba7db3c7ffef9fa619f2c471e517768b3c"
+    },
+    "pom": {
+      "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.2.pom",
+      "size": 1383,
+      "sha256": "765ec260274237f0d0655a5cefb99f9f8d12cbc4b728cbb74bc7345668e4347f"
+    },
+    "gradle_module": {
+      "file_name": "bluemap-draconic-evolution-addon-0.1.0-alpha.2.module.json",
+      "size": 2896,
+      "sha256": "69a8f62d2b746ede3aa5f4c596beaefaa80c761590ae4b2dbe44c36c96df8340"
+    }
   }
 }
