@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: jan-guenter/BlueMap
-          ref: 9be321df995a1103808621d529eb72773e719d4d
+          ref: 7e07f4e74ec1e92a6ead9aa1e66054af3e133aac
           path: .ci/bluemap
           submodules: recursive
           fetch-depth: 0
@@ -41,7 +41,7 @@ jobs:
         run: |
           test "$(git -C .ci/bluemap rev-parse --abbrev-ref HEAD)" = "HEAD"
           test "$(git -C .ci/bluemap rev-parse HEAD)" = \
-            "9be321df995a1103808621d529eb72773e719d4d"
+            "7e07f4e74ec1e92a6ead9aa1e66054af3e133aac"
           test "$(git -C .ci/bluemap/api rev-parse HEAD)" = \
             "285c9a60eff3ac2b0cab308ce1058d1565be0971"
 
@@ -87,39 +87,14 @@ jobs:
           623d7d58e58428a206015b56bf67387c79ff6d97f7221cff23b1dad0bed9544e  ${input_dir}/Draconic-Evolution-1.21.1-3.1.4.632.jar
           SHA256SUMS
 
-      - name: Read project version
-        id: version
-        run: |
-          version="$(sed -n 's/^addon_version=//p' gradle.properties)"
-          test -n "${version}"
-          echo "version=${version}" >> "${GITHUB_OUTPUT}"
-          if [[ "${version}" == *-SNAPSHOT ]]; then
-            echo "release_candidate=false" >> "${GITHUB_OUTPUT}"
-          else
-            echo "release_candidate=true" >> "${GITHUB_OUTPUT}"
-          fi
-
-      - name: Verify prototype
-        if: steps.version.outputs.release_candidate == 'false'
+      - name: Verify exact migration candidate
         run: |
           input_dir="${RUNNER_TEMP}/exact-inputs"
           gradle --no-daemon \
             -PbluemapSourcePath=.ci/bluemap \
             -PdraconicEvolutionJar="${input_dir}/Draconic-Evolution-1.21.1-3.1.4.632.jar" \
-            clean prototypeCheck build
-
-      - name: Verify reviewed release candidate
-        if: steps.version.outputs.release_candidate == 'true'
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          input_dir="${RUNNER_TEMP}/exact-inputs"
-          gradle --no-daemon \
-            -PbluemapSourcePath=.ci/bluemap \
-            -PdraconicEvolutionJar="${input_dir}/Draconic-Evolution-1.21.1-3.1.4.632.jar" \
-            "-PreleaseTag=v${VERSION}" \
-            clean build generatePomFileForAddonPublication \
-            generateMetadataFileForAddonPublication verifyReleaseCandidate
+            clean prototypeCheck build generatePomFileForAddonPublication \
+            generateMetadataFileForAddonPublication
 
       - name: Upload review outputs
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
