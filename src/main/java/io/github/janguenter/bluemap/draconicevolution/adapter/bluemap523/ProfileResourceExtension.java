@@ -134,17 +134,9 @@ final class ProfileResourceExtension implements ResourcePackExtension {
         }
     }
 
-    private static boolean validDispatch(
+    private boolean validDispatch(
             de.bluecolored.bluemap.core.resources.pack.resourcepack.blockstate.BlockState state
     ) {
-        if (state == null || state.getMultipart() != null) {
-            return false;
-        }
-        Variants variants = state.getVariants();
-        if (variants == null || variants.getDefaultVariant() == null
-                || variants.getDefaultVariant().getVariants().length != 1) {
-            return false;
-        }
         return SyntheticDispatch.matches(state, renderer);
     }
 
