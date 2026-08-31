@@ -1,10 +1,11 @@
 # BlueMap Draconic Evolution Add-on
 
-A Java 21 BlueMap add-on for the exact `draconicevolution-3.1.4.632` profile in All the Mons
-`1.2.0` / Minecraft `1.21.1`.
+A Java 21 BlueMap 5.23 feature-backport add-on for the exact
+`draconicevolution-3.1.4.632` profile in All the Mons `1.2.0` / Minecraft
+`1.21.1`.
 
-Status: owner-accepted `0.1.0-alpha.1` release candidate. The exact artifact gate and BlueMap 5.22
-adapter load fourteen deterministic models from the operator-installed
+Status: unpublished `0.1.0-alpha.2` migration candidate. The exact artifact
+gate and BlueMap 5.23 adapter load fourteen deterministic models from the operator-installed
 Draconic Evolution JAR. BlueMap's native texture clock drives permanent
 particle rings around the six relay and wireless crystals. The three direct
 I/O crystals use their tier-specific stationary center glow. Draconium Chest,
@@ -13,10 +14,15 @@ Chaos Crystal, and the three reactor components remain static.
 ## Build
 
 Clone with `--recurse-submodules`, or initialize an existing checkout with
-`git submodule update --init --recursive -- tooling/bluemap-addon-toolkit`.
-The settings preflight accepts only the committed toolkit gitlink at commit
-`6cd34a8368cc4ee8628fbe830a90ec5b14960629` and rejects an uninitialized,
-changed, or dirty toolkit checkout.
+the two pinned support modules:
+
+```bash
+git submodule update --init --recursive -- \
+  tooling/bluemap-addon-toolkit modules/bluemap-addon-adapter-api
+```
+
+The settings preflight accepts only their committed gitlinks and rejects an
+uninitialized, changed, dirty, or incorrectly pinned checkout.
 
 ```bash
 gradle --no-daemon -PbluemapSourcePath=../bluemap-backport clean check build

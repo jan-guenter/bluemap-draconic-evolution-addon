@@ -2,7 +2,8 @@
 
 | Project | Identity | License | Use | Redistributed |
 | --- | --- | --- | --- | --- |
-| BlueMap | `5.22-agent.backport-5.22-mc1.21.1-2` / `9be321df995a1103808621d529eb72773e719d4d` | MIT | Compile-only internal API | No |
+| BlueMap | Feature backport `5.22-feature.backport-5.23-stateless-java-web-server-46` / `7e07f4e74ec1e92a6ead9aa1e66054af3e133aac`; API `285c9a60eff3ac2b0cab308ce1058d1565be0971` | MIT | Compile-only internal API | No |
+| BlueMap Add-on Adapter API | `0.1.0-alpha.2` / `e81f08bc4bfbf02d810ec8949a019130e2e61634` | MIT | Four exact source files compiled into this add-on | Source only |
 | Draconic Evolution profile | `draconicevolution-3.1.4.632` | See `provenance/upstreams.json` | Exact installed-artifact and resource evidence only | No |
 
 The packaged `META-INF/LICENSE-BlueMap` preserves the license notice for the

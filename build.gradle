@@ -14,6 +14,10 @@ base {
     archivesName = artifact_id
 }
 
+sourceSets {
+    main.java.srcDir 'modules/bluemap-addon-adapter-api/src/main/java'
+}
+
 repositories {
     mavenCentral()
     maven {
@@ -99,6 +103,27 @@ tasks.named('sourcesJar', Jar).configure {
 
 def productionJar = tasks.named('jar', Jar).flatMap { it.archiveFile }
 def publishedSourcesJar = tasks.named('sourcesJar', Jar).flatMap { it.archiveFile }
+def sharedAdapterApiPackage =
+        'io/github/janguenter/bluemap/addon/adapter/api/bluemap523/'
+def sharedAdapterApiClasses = [
+        'BlueMapRuntimeCompatibility.class',
+        'RegistryGuard.class',
+        'ResourceExtensionType.class',
+        'SyntheticDispatch.class'
+].collect { sharedAdapterApiPackage + it }
+def sharedAdapterApiSources = [
+        'BlueMapRuntimeCompatibility.java',
+        'RegistryGuard.java',
+        'ResourceExtensionType.java',
+        'SyntheticDispatch.java'
+].collect { sharedAdapterApiPackage + it }
+def legacyLocalAdapterPackage =
+        'io/github/janguenter/bluemap/draconicevolution/adapter/bluemap522/'
+def displacedAdapterHelpers = [
+        'io/github/janguenter/bluemap/draconicevolution/adapter/bluemap523/AdapterCompatibility',
+        'io/github/janguenter/bluemap/draconicevolution/adapter/bluemap523/ProfileResourceExtensionType',
+        'io/github/janguenter/bluemap/draconicevolution/adapter/bluemap523/RegistryGuard'
+]
 
 tasks.register('verifyGeneratedGallery', Exec) {
     commandLine 'python3', 'gallery/generate.py', '--check'
@@ -148,8 +173,12 @@ tasks.register('verifyProductionJar') {
                     'META-INF/THIRD_PARTY-bluemap-draconic-evolution-addon.md',
                     'META-INF/bluemap-draconic-evolution/upstreams.json'
             ]
+            required.addAll(sharedAdapterApiClasses)
             def missing = required.findAll { !entries.contains(it) }
-            if (!missing.isEmpty()) {
+            def nonUniqueShared = sharedAdapterApiClasses.findAll { shared ->
+                entries.count { it == shared } != 1
+            }
+            if (!missing.isEmpty() || !nonUniqueShared.isEmpty()) {
                 throw new GradleException("Production JAR is missing: ${missing}")
             }
             def descriptor = new groovy.json.JsonSlurper().parseText(
@@ -163,6 +192,11 @@ tasks.register('verifyProductionJar') {
             }
             def candidateIds = new groovy.json.JsonSlurper()
                     .parse(file('provenance/upstreams.json')).artifacts*.mod_id
+            def foreignClasses = entries.findAll { entry ->
+                entry.endsWith('.class')
+                        && !entry.startsWith('io/github/janguenter/bluemap/draconicevolution/')
+                        && !sharedAdapterApiClasses.contains(entry)
+            }
             def forbidden = entries.findAll { entry ->
                 entry.endsWith('.jar')
                         || entry == 'META-INF/neoforge.mods.toml'
@@ -172,13 +206,16 @@ tasks.register('verifyProductionJar') {
                         || entry.startsWith('net/neoforged/')
                         || entry.startsWith('gallery/')
                         || entry.endsWith('/bootstrap.json')
-                        || (entry.endsWith('.class')
-                            && !entry.startsWith('io/github/janguenter/bluemap/draconicevolution/'))
+                        || entry.startsWith(legacyLocalAdapterPackage)
+                        || displacedAdapterHelpers.any { helper -> entry.startsWith(helper) }
+                        || (entry.startsWith(sharedAdapterApiPackage)
+                            && !sharedAdapterApiClasses.contains(entry))
                         || candidateIds.any { entry.startsWith("assets/${it}/") }
             }
-            if (!forbidden.isEmpty()) {
+            if (!foreignClasses.isEmpty() || !forbidden.isEmpty()) {
                 throw new GradleException(
-                        "Production JAR contains forbidden entries: ${forbidden}"
+                        "Production JAR boundary mismatch: foreignClasses=${foreignClasses}, "
+                                + "forbidden=${forbidden}"
                 )
             }
         } finally {
@@ -201,10 +238,15 @@ tasks.register('verifySourcesJar') {
                     'META-INF/LICENSE-BlueMap',
                     'META-INF/bluemap-draconic-evolution/upstreams.json'
             ]
+            required.addAll(sharedAdapterApiSources)
             def missing = required.findAll { !entries.contains(it) }
+            def nonUniqueShared = sharedAdapterApiSources.findAll { shared ->
+                entries.count { it == shared } != 1
+            }
             def projectJava = entries.findAll { it.endsWith('.java') }
             def foreignJava = projectJava.findAll {
                 !it.startsWith('io/github/janguenter/bluemap/draconicevolution/')
+                        && !sharedAdapterApiSources.contains(it)
             }
             def candidateIds = new groovy.json.JsonSlurper()
                     .parse(file('provenance/upstreams.json')).artifacts*.mod_id
@@ -218,14 +260,22 @@ tasks.register('verifySourcesJar') {
                         || entry.startsWith('net/neoforged/')
                         || entry.startsWith('gallery/')
                         || entry.endsWith('/bootstrap.json')
+                        || entry.startsWith(legacyLocalAdapterPackage)
+                        || displacedAdapterHelpers.any { helper ->
+                            entry == "${helper}.java"
+                        }
+                        || (entry.startsWith(sharedAdapterApiPackage)
+                            && !sharedAdapterApiSources.contains(entry))
                         || candidateIds.any { entry.startsWith("assets/${it}/") }
             }
             if (!missing.isEmpty()
+                    || !nonUniqueShared.isEmpty()
                     || projectJava.isEmpty()
                     || !foreignJava.isEmpty()
                     || !forbidden.isEmpty()) {
                 throw new GradleException(
                         "Sources JAR boundary mismatch: missing=${missing}, "
+                                + "nonUnique=${nonUniqueShared}, "
                                 + "foreignJava=${foreignJava}, forbidden=${forbidden}"
                 )
             }

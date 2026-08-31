@@ -2,18 +2,21 @@
  * SPDX-License-Identifier: MIT
  */
 
-package io.github.janguenter.bluemap.draconicevolution.adapter.bluemap522;
+package io.github.janguenter.bluemap.draconicevolution.adapter.bluemap523;
 
 import de.bluecolored.bluemap.core.map.hires.block.BlockRendererType;
 import de.bluecolored.bluemap.core.resources.pack.resourcepack.ResourcePack;
-import de.bluecolored.bluemap.core.resources.pack.resourcepack.blockstate.Variant;
 import de.bluecolored.bluemap.core.util.Key;
+import io.github.janguenter.bluemap.addon.adapter.api.bluemap523.RegistryGuard;
+import io.github.janguenter.bluemap.addon.adapter.api.bluemap523.ResourceExtensionType;
 import io.github.janguenter.bluemap.draconicevolution.activation.AddonRuntime;
 
-/** BlueMap 5.22 registration boundary. Family renderer registrations go here. */
-public final class BlueMap522Adapter {
+/** Exact BlueMap 5.23 feature-backport registration boundary. */
+public final class BlueMap523Adapter {
 
     private static final AddonRuntime RUNTIME = AddonRuntime.INSTANCE;
+    private static final Key EXTENSION_KEY =
+            Key.parse("bluemap_draconic_evolution:exact_profile");
     private static final BlockRendererType RENDERER = new BlockRendererType.Impl(
             Key.parse("bluemap_draconic_evolution:static_model"),
             (pack, textures, settings) -> new StaticModelRenderer(
@@ -21,9 +24,12 @@ public final class BlueMap522Adapter {
             )
     );
     private static final ResourcePack.Extension<ProfileResourceExtension> EXTENSION =
-            new ProfileResourceExtensionType(RUNTIME);
+            new ResourceExtensionType<>(
+                    EXTENSION_KEY,
+                    pack -> new ProfileResourceExtension(pack, RENDERER, RUNTIME)
+            );
 
-    private BlueMap522Adapter() {
+    private BlueMap523Adapter() {
     }
 
     /** Registers exact admission and the bounded static renderer. */
@@ -41,12 +47,7 @@ public final class BlueMap522Adapter {
         return true;
     }
 
-    static boolean isExpectedDispatch(Variant variant) {
-        return variant != null
-                && variant.getRenderer() == RENDERER
-                && ResourcePack.MISSING_BLOCK_MODEL.equals(variant.getModel())
-                && !variant.isTransformed()
-                && !variant.isUvlock()
-                && Double.compare(variant.getWeight(), 1D) == 0;
+    static ResourcePack.Extension<ProfileResourceExtension> extension() {
+        return EXTENSION;
     }
 }

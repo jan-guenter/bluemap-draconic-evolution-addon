@@ -19,10 +19,25 @@
   ],
   "bluemap": {
     "api_commit": "285c9a60eff3ac2b0cab308ce1058d1565be0971",
-    "commit": "9be321df995a1103808621d529eb72773e719d4d",
+    "commit": "7e07f4e74ec1e92a6ead9aa1e66054af3e133aac",
     "license": "MIT",
     "redistributed": false,
-    "version": "5.22-agent.backport-5.22-mc1.21.1-2"
+    "tested_jar_sha256": "86a0323d24f472e425dda4d4e6bba2d7d8ce8315ad009930a67131128c715e62",
+    "tested_jar_size": 6545661,
+    "version": "5.22-feature.backport-5.23-stateless-java-web-server-46"
+  },
+  "shared_adapter_api_module": {
+    "artifact_bundled": false,
+    "commit": "e81f08bc4bfbf02d810ec8949a019130e2e61634",
+    "declared_license": "MIT",
+    "integration": "exact gitlink-pinned sources compiled into the consumer",
+    "project": "BlueMap Add-on Adapter API",
+    "repository": "https://github.com/jan-guenter/bluemap-addon-adapter-api",
+    "scope": "BlueMapRuntimeCompatibility, RegistryGuard, ResourceExtensionType and SyntheticDispatch",
+    "source_tree": "2f974c9bb2ba13888d69682f86f30f58922d30eb",
+    "status": "released",
+    "tag": "v0.1.0-alpha.2",
+    "version": "0.1.0-alpha.2"
   },
   "pack": {
     "commit": "c7bb230f21d14d26859d0b92548f089b3a493ad9",

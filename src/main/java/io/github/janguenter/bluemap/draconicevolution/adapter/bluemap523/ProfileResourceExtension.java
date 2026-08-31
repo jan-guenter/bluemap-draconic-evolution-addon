@@ -2,14 +2,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-package io.github.janguenter.bluemap.draconicevolution.adapter.bluemap522;
+package io.github.janguenter.bluemap.draconicevolution.adapter.bluemap523;
 
 import de.bluecolored.bluemap.core.resources.pack.resourcepack.ResourcePack;
 import de.bluecolored.bluemap.core.resources.pack.resourcepack.ResourcePackExtension;
-import de.bluecolored.bluemap.core.resources.pack.resourcepack.blockstate.Variant;
-import de.bluecolored.bluemap.core.resources.pack.resourcepack.blockstate.Variants;
 import de.bluecolored.bluemap.core.resources.pack.resourcepack.texture.Texture;
 import de.bluecolored.bluemap.core.util.Key;
+import de.bluecolored.bluemap.core.map.hires.block.BlockRendererType;
+import io.github.janguenter.bluemap.addon.adapter.api.bluemap523.SyntheticDispatch;
 import de.bluecolored.bluemap.core.world.BlockProperties;
 import de.bluecolored.bluemap.core.world.BlockState;
 import io.github.janguenter.bluemap.draconicevolution.activation.AddonRuntime;
@@ -32,13 +32,19 @@ final class ProfileResourceExtension implements ResourcePackExtension {
             Key.parse("bluemap_draconic_evolution:static_model");
 
     private final ResourcePack resourcePack;
+    private final BlockRendererType renderer;
     private final AddonRuntime runtime;
     private Map<String, InstalledStaticModel> installed;
     private String animationFallback;
     private boolean ready;
 
-    ProfileResourceExtension(ResourcePack resourcePack, AddonRuntime runtime) {
+    ProfileResourceExtension(
+            ResourcePack resourcePack,
+            BlockRendererType renderer,
+            AddonRuntime runtime
+    ) {
         this.resourcePack = resourcePack;
+        this.renderer = renderer;
         this.runtime = runtime;
     }
 
@@ -139,8 +145,7 @@ final class ProfileResourceExtension implements ResourcePackExtension {
                 || variants.getDefaultVariant().getVariants().length != 1) {
             return false;
         }
-        Variant variant = variants.getDefaultVariant().getVariants()[0];
-        return BlueMap522Adapter.isExpectedDispatch(variant);
+        return SyntheticDispatch.matches(state, renderer);
     }
 
     private String animationMode() {
